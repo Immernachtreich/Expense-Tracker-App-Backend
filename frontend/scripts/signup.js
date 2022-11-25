@@ -16,7 +16,8 @@ function onSubmit(e) {
 
         window.alert('Please Enter all the fields');
 
-    } else {
+    } 
+    else {
         
         storeUserToDatabase();
     }  
@@ -30,5 +31,18 @@ async function storeUserToDatabase() {
         password: password.value
     }
 
-    await axios.post('http://localhost:5005/user/add-user', userDetails);
+    try{
+        const response = await axios.post('http://localhost:5005/user/add-user', userDetails);
+        
+        if(response.data.alreadyExisting) {
+            
+            window.alert('Email Already Exists');
+        }
+        else{
+            
+        }
+    }
+    catch(err) {
+        console.log(err);
+    }
 }
