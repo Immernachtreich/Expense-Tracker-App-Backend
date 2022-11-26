@@ -55,14 +55,14 @@ exports.loginUser = async (req, res, next) => {
 
             } else {
 
-                res.json({
+                res.status(401).json({
                     userExists: true,
                     correctPassword:false
                 });
             }
 
         } else {
-            res.json({userExists: false});
+            res.status(404).json({userExists: false});
         }
 
 

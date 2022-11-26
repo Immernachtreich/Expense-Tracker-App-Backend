@@ -13,7 +13,7 @@ function onSubmit(e) {
 
     if(email.value === '' || password.value === '') {
 
-        window.alert('Please Enter all the fields');
+        popupNotification('Caution', 'Please Enter all the fields')
 
     } 
     else {
@@ -32,26 +32,20 @@ async function loginUser() {
     try{
         const response = await axios.post('http://localhost:5005/user/login', userDetails);
         
-        if(response.data.userExists) {
+        popupNotification('Success','Logged In Succesfully');
 
-            if(response.data.correctPassword) {
-                
-                window.alert('Logged In Successfully');
-
-                popupNotification('Success','Logged In Succesfully');
-            }
-            else {
-
-                window.alert('Wrong Password');
-            }
-
-        } else {
-
-            window.alert('User Not Found');
-        }
     }
     catch(err) {
-        console.log(err);
+        
+        if(err.response.status === 401) {
+            
+            popupNotification('Failed', 'Wrong Password')
+        }
+
+        if(err.response.status === 404) {
+            
+            popupNotification('Failed','User Not Found');
+        }
     }
 }
 
