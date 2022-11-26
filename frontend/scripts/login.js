@@ -18,7 +18,7 @@ function onSubmit(e) {
     } 
     else {
         
-        loginUser()
+        loginUser();
     }  
 }
 
@@ -32,7 +32,7 @@ async function loginUser() {
     try{
         const response = await axios.post('http://localhost:5005/user/login', userDetails);
         
-        popupNotification('Success','Logged In Succesfully');
+        location.href = '../views/index.html';
 
     }
     catch(err) {

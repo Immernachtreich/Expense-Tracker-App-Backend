@@ -20,6 +20,7 @@ function onSubmit(e) {
     else {
         
         storeUserToDatabase();
+
     }  
 }
 
@@ -40,7 +41,8 @@ async function storeUserToDatabase() {
         }
         else{
             
-            popupNotification('Success', 'Successfully signed up');
+            //popupNotification('Success', 'Successfully signed up');
+            location.href = '../views/login.html';
         }
     }
     catch(err) {

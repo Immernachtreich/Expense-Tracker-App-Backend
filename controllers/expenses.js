@@ -1,9 +1,15 @@
 const Expenses = require('../models/expenses.js');
 
-exports.postAddExpense = (req, res) => {
-    const expenseAmount = req.body.expenseAmount;
-    const description = req.body.description;
-    const category = req.body.category;
+exports.postAddExpense = async (req, res, next) => {
+
+
+    const {expenseAmount, description, category} = req.body;
+
+    console.log(req.user);
+
+    // const expenseAmount = req.body.expenseAmount;
+    // const description = req.body.description;
+    // const category = req.body.category;
 
     Expenses
         .create({
