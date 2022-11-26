@@ -11,7 +11,7 @@ function onSubmit(e) {
 
     e.preventDefault();
 
-    if(email.value === '' || password.value === '') {
+    if(email.value.trim() === '' || password.value.trim() === '') {
 
         popupNotification('Caution', 'Please Enter all the fields')
 

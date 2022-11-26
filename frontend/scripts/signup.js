@@ -12,7 +12,7 @@ function onSubmit(e) {
 
     e.preventDefault();
 
-    if(username.value === '' || email.value === '' || password.value === '') {
+    if(username.value.trim() === '' || email.value.trim() === '' || password.value.trim() === '') {
 
         popupNotification('Caution', 'Please Enter all the fields');
 
@@ -40,6 +40,7 @@ async function storeUserToDatabase() {
         }
         else{
             
+            popupNotification('Success', 'Successfully signed up');
         }
     }
     catch(err) {

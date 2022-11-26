@@ -30,7 +30,7 @@ function onSubmit(e) {
 
     e.preventDefault();
 
-    if(expenseAmount.value === '' || description.value === '' || category.value === '') {
+    if(expenseAmount.value.trim() === '' || description.value.trim() === '' || category.value.trim() === '') {
 
         popupNotification('Error','Please Enter All The Fields');
 
