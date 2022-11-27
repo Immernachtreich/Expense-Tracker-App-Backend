@@ -5,35 +5,50 @@ exports.postAddExpense = async (req, res, next) => {
 
     const {expenseAmount, description, category} = req.body;
 
-    console.log(req.user);
+    const userId = req.user.id;
 
-    // const expenseAmount = req.body.expenseAmount;
-    // const description = req.body.description;
-    // const category = req.body.category;
+    try {
 
-    Expenses
-        .create({
-            expenseAmount: expenseAmount,
-            description: description,
-            category: category
-        })
-        .then((result) => {
-            res.json(result.dataValues);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        const result = await Expenses.create({
+                expenseAmount: expenseAmount,
+                description: description,
+                category: category,
+                userId: userId
+            });
+
+        res.json(result.dataValues);
+
+    } catch(err) {
+        console.log(err);
+    }
+    // Expenses
+    //     .create({
+    //         expenseAmount: expenseAmount,
+    //         description: description,
+    //         category: category
+    //     })
+    //     .then((result) => {
+    //         res.json(result.dataValues);
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //     })
 }
 
-exports.getAllExpenses = (req, res) => {
-    Expenses
-        .findAll()
-        .then((expenses) => {
-            res.json(expenses);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+exports.getAllExpenses = async (req, res, next) => {
+
+    try{
+
+        const userId = req.user.id;
+
+        const expenses = await Expenses.findAll({where: {userId: userId}});
+
+        res.json(expenses);
+
+    } catch(err) {
+
+        console.log(err);
+    }
 }
 
 exports.getExpense = (req, res) => {
@@ -49,21 +64,28 @@ exports.getExpense = (req, res) => {
         })
 }
 
-exports.deleteExpense = (req, res) => {
+exports.deleteExpense = async (req, res, next) => {
     const id = req.params.id;
+    const userId = req.user.id;
 
-    Expenses
-        .findByPk(id)
-        .then((result => {
+    try{
+        const expense = await Expenses.findAll({ 
+            where: { 
+                id: id,
+                userId: userId
+            }
+        });
 
-            return result.destroy();
-        }))
-        .then((response) => {
-            res.json();
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        await expense[0].destroy();
+
+        res.json();
+
+    } catch(err) {
+        
+        res.status(401).json({unauthorized: true});
+
+        console.log(err);
+    }
 }
 
 exports.editExpense = (req, res) => {

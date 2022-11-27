@@ -1,6 +1,8 @@
 const express = require('express'); // Express Import
 const bodyParser= require('body-parser'); // Body-Parser Import
 const cors = require('cors'); // Cors Import
+const dotenv = require('dotenv');
+dotenv.config();
 
 const sequelize = require('./util/database.js'); // MySQL Database import (Local Import)
 

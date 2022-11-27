@@ -1,13 +1,11 @@
 const Users = require('../models/users.js');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Sign Up
 exports.postAddUser = async (req, res, next) => {
     
     const {username, email, password} = req.body;
-    // const username = req.body.username;
-    // const email = req.body.email;
-    // const password = req.body.password;
 
     try {
 
@@ -52,14 +50,14 @@ exports.loginUser = async (req, res, next) => {
 
         if(user.length > 0) {
 
-
             const correctPassword = await bcrypt.compare(password, user[0].dataValues.password);
             
             if(correctPassword) {
 
                 res.json({
                     userExists: true,
-                    correctPassword:true
+                    correctPassword:true,
+                    token: generateToken(user[0].id, user[0].username)
                 });
 
             } else {
@@ -69,20 +67,6 @@ exports.loginUser = async (req, res, next) => {
                     correctPassword:false
                 });
             }
-            // if(user[0].dataValues.password === password) {
-                
-            //     res.json({
-            //         userExists: true,
-            //         correctPassword:true
-            //     });
-
-            // } else {
-
-            //     res.status(401).json({
-            //         userExists: true,
-            //         correctPassword:false
-            //     });
-            // }
 
         } else {
             res.status(404).json({userExists: false});
@@ -93,4 +77,12 @@ exports.loginUser = async (req, res, next) => {
 
         console.log(err);
     }
+}
+
+function generateToken(id, username) {
+
+    return jwt.sign({
+        userId: id,
+        username: username
+    }, process.env.SECRET_KEY);
 }
