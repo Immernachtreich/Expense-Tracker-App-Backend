@@ -20,7 +20,8 @@ exports.postAddUser = async (req, res, next) => {
             await Users.create({
                 username: username,
                 email: email,
-                password: hash
+                password: hash,
+                isPremium: false
             });
             
             res.json({alreadyExisting: false});

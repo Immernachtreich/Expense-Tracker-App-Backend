@@ -18,6 +18,9 @@ body {
 
 
     height: 100%;
+
+    transition: background 0.3s linear,
+    color 0.3s linear;
 }
 
 .Main-Div {
@@ -107,7 +110,7 @@ body {
 .submit-button:hover {
     
     border: 2px solid whitesmoke;
-    background-color: rgb(12, 142, 142);
+    background-color: rgb(14, 190, 190);
 }
 
 .Main-List {
@@ -269,9 +272,11 @@ body {
     }
 }
 
-body.active {
-    margin: 0;
-    font-family: 'Assistant', sans-serif;
+/*
+* Dark Mode
+*/
+
+body.dark {
 
     background-color: whitesmoke;
     /* background-image: url('https://t3.ftcdn.net/jpg/03/12/40/90/360_F_312409000_eMqNEV0nWOAQT4fT2OWDXpO0r1IJz32U.jpg');
@@ -280,9 +285,53 @@ body.active {
     background-size: cover;
     background-position: center; */
 
-
-    height: 100%;
-
+    transition: background 0.3s linear,
+    color 0.3s linear;
     
 }
 
+.dark-mode-label {
+    user-select: none;
+    background-color: whitesmoke;
+    border-radius: 50%;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: background 0.3s linear;
+}
+
+
+body.dark .dark-mode-label {
+    background-color: rgb(30, 30, 30);
+}
+
+body.dark .Main-Div h1{
+    color: rgb(44, 44, 94)
+}
+
+body.dark .Inner-Div {
+    border: 5px solid rgb(44, 44, 94);
+}
+
+body.dark .Expense-Label {
+    color: rgb(44, 44, 94);
+}
+
+body.dark .Form-Inputs{
+    border: 3px solid rgb(44, 44, 94)
+}
+
+body.dark .Select-Inputs{
+    border: 3px solid rgb(44, 44, 94)
+}
+
+.toggle-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+.toggle-dark-mode {
+    visibility: hidden;
+}

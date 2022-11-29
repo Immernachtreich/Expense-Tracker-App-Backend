@@ -1,17 +1,23 @@
 const express = require('express'); // Express Import
 const bodyParser= require('body-parser'); // Body-Parser Import
 const cors = require('cors'); // Cors Import
+
+// .env Imports and config
 const dotenv = require('dotenv');
 dotenv.config();
 
-const sequelize = require('./util/database.js'); // MySQL Database import (Local Import)
+// MySQL Database import (Local Import)
+const sequelize = require('./util/database.js'); 
 
-const expensesRoutes = require('./routes/expenses'); // Expenses Routes Imports
-const userRoutes = require('./routes/users.js'); // User Routes Imports
+// Routes Imports
+const expensesRoutes = require('./routes/expenses'); 
+const userRoutes = require('./routes/users.js');
+const premiumRoutes = require('./routes/premium.js'); 
 
-//Importing Models
+// Importing Models
 const Users = require('./models/users');
 const Expenses = require('./models/expenses');
+const Orders = require('./models/orders');
 
 const app = express(); // Initializing the backend
 
@@ -21,13 +27,22 @@ app.use(bodyParser.json({ extended: false })); // Initializing Body Parser
 // Expenses Routes
 app.use('/expenses', expensesRoutes);
 app.use('/user', userRoutes);
+app.use('/premium', premiumRoutes);
 
 // Error Routes
 app.use((req, res) => {
     res.status(404).send(`<h1> Page Not Found </h1>`);
 });
 
-// Defining Relationships
+
+/*
+* Defining Relationships
+*/
+
+//One to Many User 1<--->M Orders
+Orders.belongsTo(Users, { constraints: true, onDelete: 'CASCADE' });
+Users.hasMany(Orders);
+
 // One to Many User 1<--->M Expenses
 Expenses.belongsTo(Users, { constraints: true, onDelete: 'CASCADE' });
 Users.hasMany(Expenses);

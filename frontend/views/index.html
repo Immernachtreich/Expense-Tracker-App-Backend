@@ -9,12 +9,26 @@
         
         <link rel="stylesheet" href="../public/main.css">
         <link rel="stylesheet" href="../public/popupNotification.css">
+        <link rel="stylesheet" href="../public/header.css">
         
         <title> Expense Tracker </title>
     </head>
 
     <body class="Body">
 
+        <header class="main-header">
+
+            <div class="toggle-container" id="toggle-dark-mode-div">
+                <label for="toggle" class="dark-mode-label">
+                    
+                </label>
+                <input type="checkbox" name="toggle" id="toggle" class="toggle-dark-mode">
+            </div>
+            
+            <button class="buy-premium-button" id="buy-premium-button"> Buy Premium </button>
+            <button class="logout-button" id="logout-button"> Logout </button>
+        </header>
+        
         <div class="Main-Div">
 
             <h1 id="Main-Div-H1-Title" class="Main-Div-H1-Title"> Expense Tracker </h1>
@@ -76,6 +90,14 @@
         </div>
 
     </body>
+
+    <!-- Axios Script -->
     <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Razor Pay Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- Main Script -->
     <script src="../scripts/index.js"></script>
+
 </html>
