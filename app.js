@@ -12,7 +12,8 @@ const sequelize = require('./util/database.js');
 // Routes Imports
 const expensesRoutes = require('./routes/expenses'); 
 const userRoutes = require('./routes/users.js');
-const premiumRoutes = require('./routes/premium.js'); 
+const premiumRoutes = require('./routes/premium.js');
+const leaderboardRoutes = require('./routes/leaderboard.js'); 
 
 // Importing Models
 const Users = require('./models/users');
@@ -28,6 +29,7 @@ app.use(bodyParser.json({ extended: false })); // Initializing Body Parser
 app.use('/expenses', expensesRoutes);
 app.use('/user', userRoutes);
 app.use('/premium', premiumRoutes);
+app.use('/leaderboard', leaderboardRoutes);
 
 // Error Routes
 app.use((req, res) => {

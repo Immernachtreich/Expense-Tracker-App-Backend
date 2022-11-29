@@ -152,9 +152,6 @@ async function storeToDatabase() {
 
 async function retrieveFromDatabase() {
 
-    // Disabling Dark Mode
-    toggleDarkModeDiv.style.display = 'none';
-
     try {
 
         const response = await axios.get(
@@ -163,7 +160,8 @@ async function retrieveFromDatabase() {
         );
         
         if(response.data.isPremium === true) {
-            enableDarkMode();
+            
+            activatePremiumFeatures();
         }
 
         response.data.expenses.forEach((data) => {
@@ -322,7 +320,7 @@ function popupNotification(title, message) {
 }
 
 /*
-* Logout Button and Features 
+* Header Button and Features 
 */
 const logoutButton = document.getElementById('logout-button');
 
@@ -331,6 +329,11 @@ logoutButton.onclick = (e) => {
     location.href = '../views/login.html';
 }
 
+const leaderboardButton = document.getElementById('leaderboard-button');
+
+leaderboardButton.onclick = (e) => {
+    location.href = '../views/leaderboard.html';
+}
 
 /*
 * Dark Mode
@@ -343,8 +346,9 @@ toggle.addEventListener('change', (e) => {
     document.body.classList.toggle('dark', e.target.checked);
 });
 
-function enableDarkMode() {
+function activatePremiumFeatures() {
     
+    buyPremium.style.display = 'none';
     toggleDarkModeDiv.style.display = '';
 }
 
@@ -388,7 +392,7 @@ buyPremium.onclick = async function (e) {
                     { headers: { 'Authorization': token } }
                 );
                 
-                enableDarkMode();
+                activatePremiumFeatures();
                 popupNotification('Success', transactionStatus.data.message);
 
             } catch (err) {

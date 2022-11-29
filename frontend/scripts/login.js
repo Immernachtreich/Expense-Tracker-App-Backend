@@ -51,6 +51,9 @@ async function loginUser() {
     }
 }
 
+/*
+* Popup Notification 
+*/
 const close = document.getElementById('close');
 const popupContainer = document.getElementById('popup-container');
 const popupInnerDiv = document.getElementById('popup-inner-div');

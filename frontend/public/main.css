@@ -311,7 +311,7 @@ body.dark .Main-Div h1{
 }
 
 body.dark .Inner-Div {
-    border: 5px solid rgb(44, 44, 94);
+    border: 3px solid rgb(44, 44, 94);
 }
 
 body.dark .Expense-Label {
@@ -324,6 +324,11 @@ body.dark .Form-Inputs{
 
 body.dark .Select-Inputs{
     border: 3px solid rgb(44, 44, 94)
+}
+
+body.dark .Expense-List {
+    color: rgb(30, 30, 30);
+    border: 3px solid rgb(30, 30, 30);
 }
 
 .toggle-container {
