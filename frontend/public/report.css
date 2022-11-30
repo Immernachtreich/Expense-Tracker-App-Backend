@@ -1,0 +1,45 @@
+.report-table {
+    color: whitesmoke;
+    width: 50%;
+    margin: auto;  
+}
+
+.report-table tr, th, td {
+    border: 1px solid whitesmoke;
+    text-align: left;
+    padding: 8px;
+
+    word-wrap: break-word;
+}
+
+.report-table th{
+}
+
+.main-div-h4 {
+    color: whitesmoke;
+    text-align: center;
+    margin: 2rem;
+    font-size: 150%;
+}
+
+.download-report-button {
+
+    margin-left: 45%;
+    margin-top: 2rem;
+
+    border: none;
+    border-radius: 7px;
+    width: 10rem;
+    height: 3rem;
+
+    background-color: rgb(44, 44, 94);
+    color: whitesmoke;
+
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.download-report-button:hover {
+    border: 2px solid whitesmoke;
+    background-color: rgb(14, 190, 190);
+}

@@ -2,7 +2,7 @@
 
 .main-header {
     background-color: rgb(44, 44, 94);
-    height: 10%;
+    height: 5rem;
     width: 100%;
 }
 
@@ -64,13 +64,30 @@
     background-color: rgb(14, 190, 190);
 }
 
+.generate-report-button {
 
+    margin: 1.2rem 0.8rem;
+    font-family: inherit;
+    background-color: rgb(30, 30, 39);
+    color: whitesmoke;
+
+    border: 2px solid whitesmoke;
+    border-radius: 5px;
+
+    height: 50%;
+    width: 7rem;
+}
+
+.generate-report-button:hover {
+    background-color: rgb(14, 190, 190);
+}
 
 @media only screen and (max-width: 600px) {
 
     .buy-premium-button {
 
         font-size: 50%;
+        width: 3rem;
     }
 
     .logout-button {
@@ -82,5 +99,10 @@
     .leaderboard-button {
         font-size: 50%;
         width: 5rem;
+    }
+
+    .generate-report-button {
+        font-size: 50%;
+        width: 4rem;
     }
 }

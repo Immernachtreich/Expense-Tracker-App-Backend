@@ -335,6 +335,12 @@ leaderboardButton.onclick = (e) => {
     location.href = '../views/leaderboard.html';
 }
 
+const reportButton = document.getElementById('generate-report-button');
+
+reportButton.onclick = (e) => {
+    location.href = '../views/report.html';
+}
+
 /*
 * Dark Mode
 */
