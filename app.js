@@ -20,6 +20,7 @@ const passwordRoutes = require('./routes/password.js');
 const Users = require('./models/users');
 const Expenses = require('./models/expenses');
 const Orders = require('./models/orders');
+const ForgotPasswordRequests = require('./models/forgotPasswordRequests');
 
 const app = express(); // Initializing the backend
 
@@ -51,6 +52,9 @@ Users.hasMany(Orders);
 Expenses.belongsTo(Users, { constraints: true, onDelete: 'CASCADE' });
 Users.hasMany(Expenses);
 
+// One to Many User 1<--->M ForgotPasswordRequests
+ForgotPasswordRequests.belongsTo(Users, { constraints: true, onDelete: 'CASCADE' });
+Users.hasMany(ForgotPasswordRequests);
 
 // Initializing database and listening to port
 sequelize.sync()

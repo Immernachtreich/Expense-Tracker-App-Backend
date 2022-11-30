@@ -23,7 +23,11 @@ function onSubmit(e) {
 
 async function submitForgotPassword() {
 
-    const response = await axios.post('http://localhost:5005/password/forgot-password');
+    const response = await axios.post('http://localhost:5005/password/forgot-password',{ email: email.value } );
+
+    const a = `<a href="${response.data.link}" target="_blank"> Click Here to Reset Password </a>`;
+    
+    popupNotification('Notification','', a);
 }
 
 /*
@@ -45,7 +49,7 @@ function closePopup() {
     popupInnerDiv.removeChild(childNodes[1]);
 }
 
-function popupNotification(title, message) {
+function popupNotification(title, message, href) {
 
     popupContainer.classList.add('active');
 
@@ -55,6 +59,9 @@ function popupNotification(title, message) {
     const innerMessage = document.createElement('p');
     innerMessage.append(document.createTextNode(message));
 
+    if(href) {
+        innerMessage.innerHTML += href;
+    }
     // <h1>Success</h1>
     // <p>${message}</p>
 

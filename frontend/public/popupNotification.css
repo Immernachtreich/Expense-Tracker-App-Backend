@@ -37,6 +37,10 @@
     border: none;
 }
 
+.popup a {
+    color: whitesmoke;
+}
+
 @media only screen and (max-width: 600px) {
     .popup {
         font-size: 50%;
