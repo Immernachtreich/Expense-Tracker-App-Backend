@@ -1,12 +1,12 @@
-// Model Imports
-const Users = require('../models/users.js');
-const Expenses = require('../models/expenses.js');
+// Services Imports
+const UserServices = require('../services/userServices.js');
+const ExpenseServices = require('../services/expenseServices.js');
 
 exports.getUsers = async (req, res, next) => {
     
     try {
 
-        const users = await Users.findAll();
+        const users = await UserServices.getAllUsers();
 
         res.json(users);
 
@@ -22,7 +22,7 @@ exports.getUserExpenses = async (req, res, next) => {
 
         const userId = req.header('userId');
 
-        const expenses = await Expenses.findAll( { where: { userId: userId } } );
+        const expenses = await ExpenseServices.getUserExpenses({userId: userId});
 
         res.json(expenses);
         

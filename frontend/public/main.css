@@ -16,11 +16,17 @@ body {
     background-size: cover;
     background-position: center; */
 
-
     height: 100%;
 
     transition: background 0.3s linear,
     color 0.3s linear;
+
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
 .Main-Div {
@@ -332,9 +338,9 @@ body.dark .Expense-List {
 }
 
 .toggle-container {
-    position: fixed;
-    top: 10px;
-    right: 10px;
+
+    float: right;
+    margin-top: 1rem;
 }
 
 .toggle-dark-mode {

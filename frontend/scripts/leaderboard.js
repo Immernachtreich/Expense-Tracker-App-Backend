@@ -8,6 +8,11 @@ if(!token) {
 
 window.addEventListener('DOMContentLoaded', retrieveUsersFromDatabase);
 
+const returnHomeButton = document.getElementById('return-home-button');
+returnHomeButton.onclick = () => {
+    location.href = '../views/index.html';
+}
+
 async function retrieveUsersFromDatabase() {
 
     const users = await axios.get('http://localhost:5005/leaderboard/get-users');
@@ -53,7 +58,7 @@ async function getUserExpenses(userId) {
             `
                 <li class="user-expense-list">
                     <div class="user-expense-list-text-div">
-                    ${expense.expenseAmount} - ${expense.description} - ${expense.category};
+                    ${expense.expenseAmount} - ${expense.description} - ${expense.category}
                     </div>
                 </li>
             `

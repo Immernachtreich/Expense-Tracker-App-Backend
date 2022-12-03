@@ -342,7 +342,7 @@ reportButton.onclick = (e) => {
 }
 
 /*
-* Dark Mode
+* Premium Mode Features
 */
 
 const toggle = document.getElementById('toggle');
@@ -354,8 +354,11 @@ toggle.addEventListener('change', (e) => {
 
 function activatePremiumFeatures() {
     
-    buyPremium.style.display = 'none';
     toggleDarkModeDiv.style.display = '';
+
+    buyPremium.style.display = 'none';
+    leaderboardButton.style.display = '';
+    reportButton.style.display='';
 }
 
 /*

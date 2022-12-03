@@ -57,3 +57,24 @@
     padding: 1rem;
     border: 3px solid whitesmoke;
 }
+
+.return-home-button {
+
+    margin: 0rem 0.8rem;
+    margin-top: 1rem;
+    font-family: inherit;
+    background-color: rgb(30, 30, 39);
+    color: whitesmoke;
+
+    border: 2px solid whitesmoke;
+    border-radius: 5px;
+
+    height: 5%;
+    width: 5rem;
+
+}
+
+.return-home-button:hover {
+
+    background-color: rgb(14, 190, 190);
+}

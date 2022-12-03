@@ -1,9 +1,15 @@
+const url = 'http://localhost:5005/';
+
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
 // Model Imports
 const ForgotPasswordRequests = require('../models/forgotPasswordRequests');
 const Users = require('../models/users');
+
+// Service Imports
+const UserServices = require('../services/userServices.js');
+const ForgotPasswordServices = require('../services/forgetPasswordServices.js');
 
 exports.forgotPassword = async (req, res, next) => {
 
@@ -12,15 +18,15 @@ exports.forgotPassword = async (req, res, next) => {
     // Send the reset link to mail
     const uuid = uuidv4();
 
-    const user = await Users.findOne( { where: {email: req.body.email } } );
+    const user = await UserServices.getOneUser({email: req.body.email });
 
-    const response = await ForgotPasswordRequests.create({
+    const response = await ForgotPasswordServices.createForgotPasswordRequest({
         id: uuid,
         isActive: true,
         userId: user.id
-    });
+    })
 
-    const resetLink = 'http://localhost:5005/password/reset-password/' + uuid;
+    const resetLink = url + 'password/reset-password/' + uuid;
 
     res.json( { link: resetLink} );
 }
@@ -31,11 +37,11 @@ exports.resetPassword = async (req, res, next) => {
 
         const uuid = req.params.uuid;
 
-        const request = await ForgotPasswordRequests.findOne( { where: { id: uuid } } );
+        const request = await ForgotPasswordServices.getOneForgotPasswordRequest( { id: uuid } );
 
         if(request.isActive === true){ 
 
-            await ForgotPasswordRequests.update({ isActive: false }, { where: { id: uuid } });
+            await ForgotPasswordServices.updateForgetPasswordRequest( { isActive: false }, { id: uuid } );
 
             res.send(
                 `<html>
@@ -63,17 +69,17 @@ exports.updatePassword = async (req, res, next) => {
     const uuid = req.params.uuid;
     const password = req.query.password;
 
-    const request = await ForgotPasswordRequests.findOne( { where: { id: uuid } } );
+    const request = await ForgotPasswordServices.getOneForgotPasswordRequest({ id: uuid });
 
     const saltRounds = 10;
 
     const hash = await bcrypt.hash(password, saltRounds);
 
-    await Users.update({ password: hash }, { where: { id: request.userId } });
+    await UserServices.updateUser( { password: hash }, { id: request.userId } );
 
     res.send(
         `<html>
             <h1> Success </h1> 
         </html>`
-    )
+    );
 }

@@ -1,4 +1,4 @@
-const Expenses = require('../models/expenses.js');
+const ExpenseServices = require('../services/expenseServices.js');
 
 exports.postAddExpense = async (req, res, next) => {
 
@@ -9,30 +9,20 @@ exports.postAddExpense = async (req, res, next) => {
 
     try {
 
-        const result = await Expenses.create({
-                expenseAmount: expenseAmount,
-                description: description,
-                category: category,
-                userId: userId
-            });
+        const expense = {
+            expenseAmount: expenseAmount,
+            description: description,
+            category: category,
+            userId: userId
+        }
+
+        const result = await ExpenseServices.createExpense(expense);
 
         res.json(result.dataValues);
 
     } catch(err) {
         console.log(err);
     }
-    // Expenses
-    //     .create({
-    //         expenseAmount: expenseAmount,
-    //         description: description,
-    //         category: category
-    //     })
-    //     .then((result) => {
-    //         res.json(result.dataValues);
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //     })
 }
 
 exports.getAllExpenses = async (req, res, next) => {
@@ -41,7 +31,7 @@ exports.getAllExpenses = async (req, res, next) => {
 
         const userId = req.user.id;
 
-        const expenses = await Expenses.findAll({where: {userId: userId}});
+        const expenses = await ExpenseServices.getUserExpenses({ userId: userId });
 
         res.json({expenses: expenses, isPremium: req.user.isPremium});
 
@@ -51,17 +41,19 @@ exports.getAllExpenses = async (req, res, next) => {
     }
 }
 
-exports.getExpense = (req, res) => {
-    const id = req.params.id;
+exports.getExpense = async (req, res, next) => {
+    try {
 
-    Expenses
-        .findByPk(id)
-        .then((expense) => {
-            res.json(expense);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        const id = req.params.id;
+
+        const expense = await ExpenseServices.getExpenseByPk(id);
+        
+        res.json(expense);
+
+    } catch(err) {
+        console.log(err);
+        res.status(404).json({success: false});
+    }
 }
 
 exports.deleteExpense = async (req, res, next) => {
@@ -69,41 +61,32 @@ exports.deleteExpense = async (req, res, next) => {
     const userId = req.user.id;
 
     try{
-        const expense = await Expenses.findAll({ 
-            where: { 
-                id: id,
-                userId: userId
-            }
+        const expense = await ExpenseServices.getOneExpense({
+            id: id,
+            userId: userId
         });
 
-        await expense[0].destroy();
+        await ExpenseServices.destroyExpense(expense);
 
-        res.json();
+        res.json({success: true});
 
     } catch(err) {
-        
-        res.status(401).json({unauthorized: true});
-
         console.log(err);
+        res.status(401).json({unauthorized: true});
     }
 }
 
-exports.editExpense = (req, res) => {
-    // Project.update(
-    //     { title: 'a very different title now' },
-    //     { where: { _id: 1 } }
-    //   )
+exports.editExpense = async (req, res, next) => {
 
-    const id = req.params.id;
+    try {
+        const id = req.params.id;
 
-    Expenses.update(
-        req.body,
-        {where: {id: id}}
-    )
-    .then(() => {
-        res.json();
-    })
-    .catch(err => {
+        await ExpenseServices.updateExpense(req.body, {id: id});
+        
+        res.json({success: true});
+
+    } catch(err) {
         console.log(err);
-    })
+        res.status(401).json({unauthorized: true});
+    }
 }
