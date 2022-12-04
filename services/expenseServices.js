@@ -2,7 +2,7 @@ const Expenses = require('../models/expenses.js');
 
 exports.getUserExpenses = (constraints) => {
 
-    return Expenses.findAll({ where: constraints } );
+    return Expenses.findAll(constraints);
 }
 
 exports.createExpense = (expenseData) => {
@@ -28,4 +28,9 @@ exports.destroyExpense = (expense) => {
 exports.updateExpense = (data, constraints) => {
     
     return Expenses.update(data, {where: constraints});
+}
+
+exports.countExpense = (constraints) => {
+
+    return Expenses.count({where: constraints});
 }

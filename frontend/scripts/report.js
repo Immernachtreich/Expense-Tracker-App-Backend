@@ -4,10 +4,15 @@ const url = 'http://localhost:5005';
 // User Token
 const token = localStorage.getItem('token');
 
+// Variable Declarations
+const reportTable = document.getElementById('report-table');
+
 /*
 * Event Listeners 
 */
-window.addEventListener('DOMContentLoaded', getExpenses);
+window.addEventListener('DOMContentLoaded', () => {
+    getExpenses(1);
+});
 
 const reportDownloadButton = document.getElementById('download-report-button');
 reportDownloadButton.addEventListener('click', downloadReport);
@@ -23,17 +28,27 @@ pastLinksButton.addEventListener('click', getPastLinks);
 /*
 * Event Listener Functions 
 */
-async function getExpenses() {
+async function getExpenses(pageNumber) {
     try {
 
+        reportTable.innerHTML = 
+            `<tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Category</th>
+             </tr>`
+            
         const response = await axios.get(
-            'http://localhost:5005/premium/get-report',
+            'http://localhost:5005/premium/get-report?page=' + pageNumber,
             { headers: { 'Authorization': token } } 
         );
 
         response.data.expenses.forEach((expense) => {
             createTable(expense);
         });
+
+        pagination(response.data);
 
     } catch(err) {
         popupNotification('Error', 'You are not a Premium User');
@@ -81,10 +96,10 @@ async function getPastLinks() {
         });
 
         console.log(aDiv);
-        popupNotification('Links', aDiv);
+        popupNotification('Links', '', aDiv);
 
     } catch(err) {
-        popupNotification('Error', 'You are not a Premium User');
+        popupNotification('Error', `You are not a Premium User`);
         
     }
 }
@@ -94,8 +109,6 @@ async function getPastLinks() {
 */
 
 function createTable(expense) {
-
-    const reportTable = document.getElementById('report-table');
 
     const tr = 
         `<tr>
@@ -108,6 +121,60 @@ function createTable(expense) {
     reportTable.innerHTML += tr;
 }
 
+/*
+*  Other Function
+*/
+
+function pagination(data) {
+
+    const pageButtonsDiv = document.getElementById('page-buttons-div');
+
+    // Clearing existing buttons
+    pageButtonsDiv.innerHTML = '';
+
+    // Creating the previous Button if it exists
+    if(data.hasPreviousPage) {
+        const prevButton = document.createElement('button');
+
+        prevButton.innerHTML = data.previousPage;
+
+        prevButton.classList.add('page-buttons');
+
+        prevButton.addEventListener('click', () => {
+            getExpenses(data.previousPage);
+        })
+
+        pageButtonsDiv.appendChild(prevButton);
+    }
+
+    const currentButton = document.createElement('button');
+
+    currentButton.innerHTML = data.currentPage;
+
+    currentButton.classList.add('page-buttons');
+    currentButton.classList.toggle('active');
+
+    currentButton.addEventListener('click', () => {
+        getExpenses(data.currentPage);
+    })
+
+    pageButtonsDiv.appendChild(currentButton);
+
+    // Creating the next button if it exists
+    if(data.hasNextPage) {
+        const nextButton = document.createElement('button');
+
+        nextButton.innerHTML = data.nextPage;
+
+        nextButton.classList.add('page-buttons');
+
+        nextButton.addEventListener('click', () => {
+            getExpenses(data.nextPage);
+        })
+
+        pageButtonsDiv.appendChild(nextButton);
+    }
+}
 
 /*
 * Popup Notification 
@@ -128,7 +195,7 @@ function closePopup() {
     popupInnerDiv.removeChild(childNodes[1]);
 }
 
-function popupNotification(title, message) {
+function popupNotification(title, message, htmlTags) {
 
     popupContainer.classList.add('active');
 
@@ -136,7 +203,13 @@ function popupNotification(title, message) {
     headingH1.append(document.createTextNode(title));
 
     const innerMessage = document.createElement('div');
-    innerMessage.appendChild(message);
+    
+    if(htmlTags) {
+        innerMessage.appendChild(htmlTags);
+    }
+    else {
+        innerMessage.append(document.createTextNode(message));
+    }
 
     // <h1>Success</h1>
     // <p>${message}</p>
