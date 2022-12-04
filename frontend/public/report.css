@@ -88,3 +88,22 @@
 .report-download-links {
     display: block;
 }
+
+.rows-select-label {
+    color: whitesmoke;
+    margin-left: 2rem;
+}
+
+.rows-select {
+    text-align: center;
+
+    height: 1.7rem;
+    margin: 1rem auto;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    background-color: rgb(44, 44, 94);
+    color: whitesmoke;
+    border: 3px solid whitesmoke;
+}

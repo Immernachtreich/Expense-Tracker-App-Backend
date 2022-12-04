@@ -28,7 +28,7 @@ pastLinksButton.addEventListener('click', getPastLinks);
 /*
 * Event Listener Functions 
 */
-async function getExpenses(pageNumber) {
+async function getExpenses(pageNumber, ITEMS_PER_PAGE) {
     try {
 
         reportTable.innerHTML = 
@@ -38,9 +38,13 @@ async function getExpenses(pageNumber) {
                 <th>Description</th>
                 <th>Category</th>
              </tr>`
-            
+        
+        if(ITEMS_PER_PAGE == null) {
+            ITEMS_PER_PAGE = 5;
+        }
+
         const response = await axios.get(
-            'http://localhost:5005/premium/get-report?page=' + pageNumber,
+            'http://localhost:5005/premium/get-report?page=' + pageNumber + '&rows=' + ITEMS_PER_PAGE,
             { headers: { 'Authorization': token } } 
         );
 
@@ -120,6 +124,14 @@ function createTable(expense) {
 
     reportTable.innerHTML += tr;
 }
+
+const rowsSelect = document.getElementById('rows-select');
+rowsSelect.addEventListener('change', () => {
+
+    const ITEMS_PER_PAGE = rowsSelect.value;
+
+    getExpenses(1, ITEMS_PER_PAGE);
+})
 
 /*
 *  Other Function
