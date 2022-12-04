@@ -2,12 +2,12 @@ const Sequelize = require('sequelize');
 
 // Initializing the database
 const sequelize = new Sequelize(
-    'expense-tracker-app-db',
-    'root',
-    'Chickoo11',
+    process.env.DB_NAME,
+    process.env.DB_USERNAME,
+    process.env.DB_PASSWORD,
     {
         dialect: 'mysql',
-        host: 'localhost'
+        host: process.env.DB_HOST
     });
 
 module.exports = sequelize;
