@@ -58,6 +58,11 @@ app.use('/premium', premiumRoutes);
 app.use('/leaderboard', leaderboardRoutes);
 app.use('/password', passwordRoutes);
 
+// Deployment Home Route
+app.use((req, res, next) => {
+    res.sendFile(path.join(__dirname, `frontend/${req.url}`));
+});
+
 // Error Routes
 app.use((req, res) => {
     res.status(404).send(`<h1> Page Not Found </h1>`);
