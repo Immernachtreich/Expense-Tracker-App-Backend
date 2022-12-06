@@ -1,3 +1,6 @@
+// URL
+const URL = 'http://localhost:5005';
+
 // Main Form
 const mainForm = document.getElementById('Main-Form');
 
@@ -30,7 +33,7 @@ async function loginUser() {
     }
 
     try{
-        const response = await axios.post('http://localhost:5005/user/login', userDetails);
+        const response = await axios.post(URL+ '/user/login', userDetails);
         
         localStorage.setItem('token', response.data.token);
 

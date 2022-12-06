@@ -1,3 +1,6 @@
+// URL
+const URL = 'http://localhost:5005';
+
 // Main Form
 const mainForm = document.getElementById('Main-Form');
 
@@ -68,7 +71,7 @@ async function editItem(e) {
 
     // Accessing the list
     let li = e.target.parentElement.parentElement;
-    let url = 'http://localhost:5005/expenses/edit-expense/' + li.id;
+    let url = URL+ '/expenses/edit-expense/' + li.id;
 
     try{
         let response = await axios.get(url);
@@ -95,7 +98,7 @@ async function deleteItem(e) {
     // Accessing the list
     let li = e.target.parentElement.parentElement;
 
-    let url = 'http://localhost:5005/expenses/delete-expense/' + li.id;
+    let url = URL+ '/expenses/delete-expense/' + li.id;
 
     try {
 
@@ -133,7 +136,7 @@ async function storeToDatabase() {
     try{
 
         const response = await axios.post(
-                'http://localhost:5005/expenses/add-expense',
+                URL+ '/expenses/add-expense',
                 expenseDetails,
                 { headers: { 'Authorization': token } }
             );
@@ -159,7 +162,7 @@ async function retrieveFromDatabase(pageNumber) {
         mainList.innerHTML = '';
 
         const response = await axios.get(
-            'http://localhost:5005/expenses/get-expenses/?page=' + pageNumber,
+            URL+ '/expenses/get-expenses/?page=' + pageNumber,
             { headers: { 'Authorization': token } } 
         );
 
@@ -429,7 +432,7 @@ buyPremium.onclick = async function (e) {
 
 
     const response = await axios.post(
-        'http://localhost:5005/premium/get-premium',
+        URL+ '/premium/get-premium',
         '',
         { headers: { 'Authorization': token } }
     );
@@ -451,7 +454,7 @@ buyPremium.onclick = async function (e) {
             try {
 
                 const transactionStatus = await axios.post(
-                    'http://localhost:5005/premium/transaction-status',
+                    URL+ '/premium/transaction-status',
                     {
                         orderId: response.razorpay_order_id,
                         paymentId: response.razorpay_payment_id

@@ -1,3 +1,6 @@
+// URL
+const URL = 'http://localhost:5005';
+
 // Main Form
 const mainForm = document.getElementById('Main-Form');
 
@@ -23,7 +26,7 @@ function onSubmit(e) {
 
 async function submitForgotPassword() {
 
-    const response = await axios.post('http://localhost:5005/password/forgot-password',{ email: email.value } );
+    const response = await axios.post(URL + '/password/forgot-password',{ email: email.value } );
 
     const a = `<a href="${response.data.link}" target="_blank"> Click Here to Reset Password </a>`;
     

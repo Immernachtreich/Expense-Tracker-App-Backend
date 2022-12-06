@@ -1,3 +1,6 @@
+// URL
+const URL = 'http://localhost:5005';
+
 // Main Form
 const mainForm = document.getElementById('Main-Form');
 
@@ -33,7 +36,7 @@ async function storeUserToDatabase() {
     }
 
     try{
-        const response = await axios.post('http://localhost:5005/user/add-user', userDetails);
+        const response = await axios.post(URL + '/user/add-user', userDetails);
         
         if(response.data.alreadyExisting) {
             

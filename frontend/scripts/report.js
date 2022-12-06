@@ -1,11 +1,20 @@
 // URL
-const url = 'http://localhost:5005';
+const URL = 'http://localhost:5005';
 
 // User Token
 const token = localStorage.getItem('token');
 
 // Variable Declarations
 const reportTable = document.getElementById('report-table');
+
+// ITEMS_PER_PAGE
+const rowsSelect = document.getElementById('rows-select');
+
+rowsSelect.addEventListener('change', () => {
+    const ITEMS_PER_PAGE = rowsSelect.value;
+    getExpenses(1, ITEMS_PER_PAGE);
+})
+
 
 /*
 * Event Listeners 
@@ -44,7 +53,7 @@ async function getExpenses(pageNumber, ITEMS_PER_PAGE) {
         }
 
         const response = await axios.get(
-            'http://localhost:5005/premium/get-report?page=' + pageNumber + '&rows=' + ITEMS_PER_PAGE,
+            URL + '/premium/get-report?page=' + pageNumber + '&rows=' + ITEMS_PER_PAGE,
             { headers: { 'Authorization': token } } 
         );
 
@@ -65,7 +74,7 @@ async function downloadReport() {
     try {
 
         const response = await axios.get(
-            url + '/premium/download-report',
+            URL + '/premium/download-report',
             { headers: { 'Authorization': token } }
         );
 
@@ -86,7 +95,7 @@ async function getPastLinks() {
     try {
 
         const pastReports = await axios.get(
-            'http://localhost:5005/premium/past-reports',
+            URL + '/premium/past-reports',
             { headers: { 'Authorization': token } } 
         );
         
@@ -125,20 +134,13 @@ function createTable(expense) {
     reportTable.innerHTML += tr;
 }
 
-const rowsSelect = document.getElementById('rows-select');
-rowsSelect.addEventListener('change', () => {
-
-    const ITEMS_PER_PAGE = rowsSelect.value;
-
-    getExpenses(1, ITEMS_PER_PAGE);
-})
-
 /*
 *  Other Function
 */
 
 function pagination(data) {
 
+    const ITEMS_PER_PAGE = rowsSelect.value;
     const pageButtonsDiv = document.getElementById('page-buttons-div');
 
     // Clearing existing buttons
@@ -153,7 +155,7 @@ function pagination(data) {
         prevButton.classList.add('page-buttons');
 
         prevButton.addEventListener('click', () => {
-            getExpenses(data.previousPage);
+            getExpenses(data.previousPage, ITEMS_PER_PAGE);
         })
 
         pageButtonsDiv.appendChild(prevButton);
@@ -167,7 +169,7 @@ function pagination(data) {
     currentButton.classList.toggle('active');
 
     currentButton.addEventListener('click', () => {
-        getExpenses(data.currentPage);
+        getExpenses(data.currentPage, ITEMS_PER_PAGE);
     })
 
     pageButtonsDiv.appendChild(currentButton);
@@ -181,7 +183,7 @@ function pagination(data) {
         nextButton.classList.add('page-buttons');
 
         nextButton.addEventListener('click', () => {
-            getExpenses(data.nextPage);
+            getExpenses(data.nextPage, ITEMS_PER_PAGE);
         })
 
         pageButtonsDiv.appendChild(nextButton);

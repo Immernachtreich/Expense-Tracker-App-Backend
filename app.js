@@ -9,6 +9,7 @@ const morgan = require('morgan');
 // Node Modules Imports
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 
 // .env Imports and config
 const dotenv = require('dotenv');
@@ -32,6 +33,10 @@ const ForgotPasswordRequests = require('./models/forgotPasswordRequests');
 const DownloadLinks = require('./models/downloadLinks');
 
 const app = express(); // Initializing the backend
+
+// Initilizing https
+const privateKey = fs.readFileSync('server.key');
+const certificate = fs.readFileSync('server.cert');
 
 // Initialzing logging Files
 const accessLogFiles = fs.createWriteStream(
@@ -82,6 +87,8 @@ Users.hasMany(DownloadLinks);
 // Initializing database and listening to port
 sequelize.sync()
     .then((result) => {
+        // https
+        // .createServer({key: privateKey, cert: certificate},app)
         app.listen(5005);
     })
     .catch(err => {

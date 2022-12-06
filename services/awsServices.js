@@ -29,7 +29,6 @@ exports.uploadToS3 = async (data, fileName) => {
             } else {
     
                 console.log('Success', s3Response);
-    
                 resolve(s3Response.Location);
             }
         });
