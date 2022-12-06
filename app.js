@@ -34,9 +34,9 @@ const DownloadLinks = require('./models/downloadLinks');
 
 const app = express(); // Initializing the backend
 
-// Initilizing https
-const privateKey = fs.readFileSync('server.key');
-const certificate = fs.readFileSync('server.cert');
+// // Initilizing https
+// const privateKey = fs.readFileSync('server.key');
+// const certificate = fs.readFileSync('server.cert');
 
 // Initialzing logging Files
 const accessLogFiles = fs.createWriteStream(
