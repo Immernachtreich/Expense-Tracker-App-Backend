@@ -9,7 +9,7 @@ const morgan = require('morgan');
 // Node Modules Imports
 const fs = require('fs');
 const path = require('path');
-// const https = require('https');
+const https = require('https');
 
 // .env Imports and config
 const dotenv = require('dotenv');
@@ -34,9 +34,9 @@ const DownloadLinks = require('./models/downloadLinks');
 
 const app = express(); // Initializing the backend
 
-// // Initilizing https
-// const privateKey = fs.readFileSync('server.key');
-// const certificate = fs.readFileSync('server.cert');
+// Initilizing https
+const privateKey = fs.readFileSync('server.key');
+const certificate = fs.readFileSync('server.cert');
 
 // Initialzing logging Files
 const accessLogFiles = fs.createWriteStream(
@@ -47,8 +47,8 @@ const accessLogFiles = fs.createWriteStream(
 // Initializing Middleware
 app.use(cors()); 
 app.use(bodyParser.json({ extended: false }));
-// app.use(helmet());
-// app.use(compression());
+app.use(helmet());
+app.use(compression());
 app.use(morgan('combined', {stream: accessLogFiles})); 
 
 // Expenses Routes
