@@ -92,9 +92,9 @@ Users.hasMany(DownloadLinks);
 // Initializing database and listening to port
 sequelize.sync()
     .then((result) => {
-        // https
-        // .createServer({key: privateKey, cert: certificate},app)
-        app.listen(5005);
+        https
+        .createServer({key: privateKey, cert: certificate},app)
+        .listen(5005);
     })
     .catch(err => {
         console.log(err);
