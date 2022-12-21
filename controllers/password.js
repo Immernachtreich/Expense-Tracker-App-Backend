@@ -4,44 +4,42 @@ const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
 // Model Imports
-const ForgotPasswordRequests = require('../models/forgotPasswordRequests');
 const Users = require('../models/users');
-
-// Service Imports
-const UserServices = require('../services/userServices.js');
-const ForgotPasswordServices = require('../services/forgetPasswordServices.js');
+const ForgotPassword = require('../models/forgotPassword');
 
 exports.forgotPassword = async (req, res, next) => {
 
-    // Send an email to the retrieved email using sendgrid
+    try {
+        // Send an email to the retrieved email using sendgrid
+        // Send the reset link to mail
+        const uuid = uuidv4();
 
-    // Send the reset link to mail
-    const uuid = uuidv4();
+        const user = await Users.findOne({ 'email': req.body.email });
 
-    const user = await UserServices.getOneUser({email: req.body.email });
+        await ForgotPassword.create({
+            uuid: uuid,
+            isActive: true,
+            userId: user
+        });
+        
+        const resetLink = url + 'password/reset-password/' + uuid;
 
-    const response = await ForgotPasswordServices.createForgotPasswordRequest({
-        id: uuid,
-        isActive: true,
-        userId: user.id
-    })
-
-    const resetLink = url + 'password/reset-password/' + uuid;
-
-    res.json( { link: resetLink} );
+        res.json({ link: resetLink });
+    } catch(err) {
+        console.log(err);
+    }
 }
 
 exports.resetPassword = async (req, res, next) => {
 
     try {
-
         const uuid = req.params.uuid;
 
-        const request = await ForgotPasswordServices.getOneForgotPasswordRequest( { id: uuid } );
+        const request = await ForgotPassword.findOne({ 'uuid': uuid });
 
         if(request.isActive === true){ 
 
-            await ForgotPasswordServices.updateForgetPasswordRequest( { isActive: false }, { id: uuid } );
+            await ForgotPassword.findOneAndUpdate({ 'uuid': uuid }, { isActive: false });
 
             res.send(
                 `<html>
@@ -58,7 +56,6 @@ exports.resetPassword = async (req, res, next) => {
         else {
             res.status(400).json( { message: 'Request inactive' } );
         }
-
     } catch(err) {
         res.status(400).json( { success: false, message: err} );
     }
@@ -69,13 +66,12 @@ exports.updatePassword = async (req, res, next) => {
     const uuid = req.params.uuid;
     const password = req.query.password;
 
-    const request = await ForgotPasswordServices.getOneForgotPasswordRequest({ id: uuid });
+    const request = await ForgotPassword.findOne({ 'uuid': uuid });
 
     const saltRounds = 10;
-
     const hash = await bcrypt.hash(password, saltRounds);
 
-    await UserServices.updateUser( { password: hash }, { id: request.userId } );
+    await Users.findByIdAndUpdate(request.userId, { password: hash });
 
     res.send(
         `<html>

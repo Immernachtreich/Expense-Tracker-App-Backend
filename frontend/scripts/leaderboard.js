@@ -1,5 +1,5 @@
 // URL
-const URL = 'http://13.200.0.23:5005'
+const URL = 'http://localhost:5005';
 
 //Checking if user token exists
 const token = localStorage.getItem('token');
@@ -32,20 +32,20 @@ async function retrieveUsersFromDatabase() {
                 </div>
 
                 <div class="leaderboard-button-div">
-                    <button class="view-expenses-button" onclick="getUserExpenses(${user.id})"> 
+                    <button class="view-expenses-button" onclick="getUserExpenses('${user._id}')"> 
                     View Expenses 
                     </button>
                 </div>
 
             </li>
         `
-
         mainLeaderboardList.innerHTML += li;
     })
 }
 
 async function getUserExpenses(userId) {
 
+    console.log(userId)
     const expenses = await axios.get(
         URL + '/leaderboard/get-user-expenses',
         { headers: { 'userId': userId } }

@@ -1,5 +1,5 @@
 // URL
-const URL = 'http://13.200.0.23:5005'
+const URL = 'http://localhost:5005';
 
 // Main Form
 const mainForm = document.getElementById('Main-Form');

@@ -1,20 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const downloadLinksSchema = new Schema({
-    fileUrl: {
+const forgotPasswordSchema = new Schema({
+    uuid: {
         type: String,
         required: true
     },
-    fileName: {
-        type: String,
+    isActive: {
+        type: Boolean,
         required: true
     },
     userId: {
         type: Schema.Types.ObjectId,
-        ref: 'Users',
         required: true
     }
 });
 
-module.exports = mongoose.model('DownloadLinks', downloadLinksSchema);
+module.exports = mongoose.model('ForgotPassword', forgotPasswordSchema);

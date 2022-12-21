@@ -1,21 +1,20 @@
+// Service Imports
 const bcrypt = require('bcrypt');
-
-const UserServices = require('../services/userServices.js');
 const jwtServices = require('../services/jwtServices.js');
+
+//Model Imports
+const User = require('../models/users');
 
 // Sign Up
 exports.postAddUser = async (req, res, next) => {
-    
-    const {username, email, password} = req.body;
+
+    const { username, email, password } = req.body;
 
     try {
-
-        const user = await UserServices.getOneUser({email: email});
+        const user = await User.findOne({ 'email': email });
 
         if(!user) {
-
             const saltRounds = 10;
-
             const hash = await bcrypt.hash(password, saltRounds);
 
             const userData = {
@@ -25,16 +24,13 @@ exports.postAddUser = async (req, res, next) => {
                 isPremium: false
             };
 
-            await UserServices.createUser(userData);
+            await User.create(userData);
             
             res.json({alreadyExisting: false});
 
         } else {
-
             res.json({alreadyExisting: true});
         }
-        
-
     } catch(err) {
         console.log(err);
     }
@@ -43,43 +39,30 @@ exports.postAddUser = async (req, res, next) => {
 // Login
 exports.loginUser = async (req, res, next) => {
 
-    const email = req.body.email;
-    const password = req.body.password;
-
+    const { email, password } = req.body;
     try {
-
-        // This returns an array 
-        // But due to nature of email being a unique value the array will contain either no users or only one user
-        const user = await UserServices.getOneUser({email: email});
+        const user = await User.findOne({ 'email': email });
 
         if(user) {
-
+            // returns a boolean value
             const correctPassword = await bcrypt.compare(password, user.password);
             
             if(correctPassword) {
-
                 res.json({
                     userExists: true,
                     correctPassword:true,
                     token: jwtServices.generateToken(user.id, user.username)
                 });
-
             } else {
-
                 res.status(401).json({
                     userExists: true,
                     correctPassword:false
                 });
             }
-
         } else {
             res.status(404).json({userExists: false});
         }
-
-
     } catch(err) {
-
         console.log(err);
     }
 }
-

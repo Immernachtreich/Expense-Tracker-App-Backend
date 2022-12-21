@@ -20,14 +20,11 @@ exports.uploadToS3 = async (data, fileName) => {
     }
 
     return new Promise((resolve, reject) => {
-
         s3Bucket.upload(params, (err, s3Response) => {
-
             if(err) {
                 console.log(err);
                 reject(err);
             } else {
-    
                 console.log('Success', s3Response);
                 resolve(s3Response.Location);
             }

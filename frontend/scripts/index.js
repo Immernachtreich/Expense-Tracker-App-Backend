@@ -1,5 +1,5 @@
 // URL
-const URL = 'http://13.200.0.23:5005';
+const URL = 'http://localhost:5005';
 
 // Main Form
 const mainForm = document.getElementById('Main-Form');
@@ -43,9 +43,7 @@ function onSubmit(e) {
     e.preventDefault();
 
     if(expenseAmount.value.trim() === '' || description.value.trim() === '' || category.value.trim() === '') {
-
         popupNotification('Error','Please Enter All The Fields');
-
     } else if(edit[0]){
 
         // Editing the existing details
@@ -53,9 +51,7 @@ function onSubmit(e) {
 
         // Clearing the fields
         clearFields();
-
     } else {
-        
         // Storing to local Storage and creating new list
         storeToDatabase();
 
@@ -134,23 +130,18 @@ async function storeToDatabase() {
 
     // Storing to crud crud
     try{
-
-        const response = await axios.post(
-                URL+ '/expenses/add-expense',
-                expenseDetails,
-                { headers: { 'Authorization': token } }
-            );
-
+        await axios.post(
+            URL+ '/expenses/add-expense',
+            expenseDetails,
+            { headers: { 'Authorization': token } }
+        );
         retrieveFromDatabase(1);
         
     } catch(err) {
-
         if(err.response.status === 401) {
-
             localStorage.removeItem('token');
             location.href = '../views/login.html';
         }
-
         console.log(err);
     }
 }
@@ -158,7 +149,6 @@ async function storeToDatabase() {
 async function retrieveFromDatabase(pageNumber) {
 
     try {
-
         mainList.innerHTML = '';
 
         const response = await axios.get(
@@ -167,7 +157,6 @@ async function retrieveFromDatabase(pageNumber) {
         );
 
         if(response.data.isPremium === true) {
-            
             activatePremiumFeatures();
         }
 
@@ -178,13 +167,10 @@ async function retrieveFromDatabase(pageNumber) {
         pagination(response.data);
 
     } catch(err) {
-
         if(err.response.status === 401) {
-
             localStorage.removeItem('token');
             location.href = '../views/login.html';
         }
-
         console.log(err);
     }
 }
@@ -241,7 +227,7 @@ function createList(data) {
     ));
 
     // Assinging the description as id for list
-    li.id = data.id;
+    li.id = data._id;
     li.className = 'Expense-List';
 
     // Adding edit and delete buttons to the list
@@ -329,7 +315,6 @@ function popupNotification(title, message) {
 }
 
 function pagination(data) {
-    console.log(data);
 
     const pageButtonsDiv = document.getElementById('page-buttons-div');
 
